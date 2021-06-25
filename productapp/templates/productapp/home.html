@@ -1,0 +1,174 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Shoping page</title>
+<link rel="stylesheet" type="text/css" href="{% static "css/usercrud-style.css" %}">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{% static "js/usercrud-js.js" %}"></script>
+</head>
+
+<script type="text/javascript">
+	$.ajax({
+		type:'GET',
+		url: '{% url "productapp:mylist" %}',
+		contentType: "application/json; charset=utf-8",
+		data: {
+			'id':'testid',
+		},
+		dataType: 'json',
+		success: function(data){
+			x = data.stud_data
+			if(data){
+				for(i=0;i<x.length;i++){
+					output +="<tr><td>" + x[i].id + "</td><td>" + x[i].name + "</td><td>" + x[i].category + "</td><td>" + x[i].size + "</td><td>" + x[i].product_type + "</td><td>" + x[i].price +"</td><td><input type='button' class='btn btn-warning btn-sm' value='Edit' data-sid=" + x[i].id + " /> ";
+				}
+				$("#tbody").html(output)					
+			}
+		},
+		error:function(e){
+			console.log(e);
+		},
+	}); 	
+</script>
+
+
+<body>
+    <div class="container">
+		<div class="table-responsive">
+			<div class="table-wrapper">
+				<a href="{% url 'productapp:index' %}"><button type="button" class="btn btn-warning">Home</button></a>
+				<div class="table-title">
+
+					<div class="row">
+						<div class="col-xs-6">
+							<h2>choose <b>Products</b></h2>
+						</div>
+						<div class="col-xs-6">
+							<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Go to Cart</span></a>
+												
+						</div>
+					</div>
+				</div>
+				<table class="table table-striped table-hover" >
+					<thead>
+						<tr>
+							<th>SN</th>
+							<th>Product</th>
+							<th>Category</th>
+							<th>Size</th>
+							<th>Type</th>
+							<th>Price</th>
+							<th>Select</th>
+						</tr>
+					</thead>
+					<tbody id="tbody"> 
+						{% if pro %}						
+												
+						{% for pr in pro %}
+						<tr>
+							<td>{{ pr.id }}</td>
+							
+							<td>{{pr.name}}</td>
+							<td>{{ pr.category}}</td>
+							
+							{% for sz in pr.size.all %}
+							<td>{{ sz}}</td>
+							{% endfor %}
+
+							{% for typ in pr.product_type.all  %}
+							<td>{{typ}}</td>
+							{% endfor %}
+							
+							<td>{{ pr.price }}</td>
+							<td>
+								<span class="custom-checkbox">
+									<input type="checkbox" id="checkbox1" name="options[]" value="{{ pr.id }}">
+									<label for="checkbox1"></label>
+									<!-- <a href="{% url 'productapp:cart_add' pr.pk %}">Add To Cart</a> -->
+								</span>
+							</td>
+							
+						</tr>
+						{% endfor %}
+						{% endif %}
+						
+						
+						
+					</tbody>
+				</table>
+				<div class="clearfix">
+					<div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
+					<ul class="pagination">
+						<li class="page-item disabled"><a href="#">Previous</a></li>
+						<li class="page-item"><a href="#" class="page-link">1</a></li>
+						<li class="page-item"><a href="#" class="page-link">2</a></li>
+						<li class="page-item active"><a href="#" class="page-link">3</a></li>
+						<li class="page-item"><a href="#" class="page-link">4</a></li>
+						<li class="page-item"><a href="#" class="page-link">5</a></li>
+						<li class="page-item"><a href="#" class="page-link">Next</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>        
+    </div>
+	<!-- Edit Modal HTML -->
+	<div id="addEmployeeModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form>
+					<div class="modal-header">						
+						<h4 class="modal-title">My Cart Items</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					</div>
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Item 1</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Item 2</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Item 3</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Item 4</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Item 5</label>
+							<input type="text" class="form-control" required>
+						</div>	
+						<div class="form-group">
+							<label>Item 6</label>
+							<input type="text" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Item 7</label>
+							<input type="text" class="form-control" required>
+						</div>							
+					</div>
+					<div class="modal-footer">
+						<input type="button" class="btn btn-default" data-dismiss="modal" value="Clear Cart">
+						<input type="submit" class="btn btn-success" value="Go for payment">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
